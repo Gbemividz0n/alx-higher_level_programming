@@ -1,3 +1,5 @@
 #!/usr/bin/python3
-for ch in reversed(range(97, 123)):
-    print("{:c}".format(ch if (ch % 2 == 0) else (ch - 32)), end='')
+for a in reversed(range(ord("a"), ord("z") + 1)):
+    if a % 2 != 0:
+        a = a - 32
+    print("{:c}".format(a), end="")
