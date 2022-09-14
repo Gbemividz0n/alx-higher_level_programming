@@ -1,22 +1,23 @@
 #!/usr/bin/python3
 """
-Prints all City objects from the database hbtn_0e_14_usa
+Script that prints all city obj
 """
-import sys
-from model_state import Base, State
-from model_city import City
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 
-if __name__ == '__main__':
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost:3306/{}'.
-                           format(sys.argv[1], sys.argv[2], sys.argv[3]),
-                           pool_pre_ping=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
+if __name__ == "__main__":
+    from sys import argv
+    from model_state import Base, State
+    from model_city import City
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import aliased, sessionmaker
 
-    st_cty = session.query(State, City).filter(State.id == City.state_id).all()
-
-    for state, city in st_cty:
-        print("{}: ({}) {}".format(state.name, city.id, city.name))
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
+        argv[1], argv[2], argv[3]), pool_pre_ping=True)
+    Session = sessionmaker()
+    session = Session(bind=engine)
+    Base.metadata.create_all(engine)
+    res = (session.query(State, City).filter(
+        State.id == City.state_id).order_by(City.id).all())
+    for st, cy in res:
+        print("{}: ({:d}) {}".format(st.name, cy.id, cy.name))
+    session.close()
