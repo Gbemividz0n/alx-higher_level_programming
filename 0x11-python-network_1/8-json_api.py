@@ -1,18 +1,21 @@
 #!/usr/bin/python3
+"""
+Python script that takes in a letter and sends a POST request to
+http://0.0.0.0:5000/search_user with the letter as a parameter.
+"""
+import sys
 import requests
-from sys import argv
-"""
-Script that takes a letter and post request to url/search_user
-"""
-
 
 if __name__ == "__main__":
-    q = argv[1] if len(argv) > 1 else ""
+    url = 'http://0.0.0.0:5000/search_user'
+
+    q = sys.argv[1] if len(sys.argv) >= 2 else ""
+
+    response = requests.post(url, data={'q': q})
     try:
-        re = requests.post('http://0.0.0.0:5000/search_user',
-                           data={'q': q}).json()
-        if 'id' in re and 'name' in re:
-            print("[{}] {}".format(re['id'], re['name']))
+        r_dict = response.json()
+        if r_dict:
+            print("[{}] {}".format(r_dict.get('id'), r_dict.get('name')))
         else:
             print("No result")
     except ValueError:
