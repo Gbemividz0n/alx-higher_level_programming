@@ -1,23 +1,20 @@
 #!/usr/bin/python3
-from sys import argv
+"""
+Python script that takes your GitHub credentials (username and password)
+and uses the GitHub API to display your id
+"""
+import sys
 import requests
-"""
-script takes 2 args and gets 10 commits
-"""
-
+from requests.auth import HTTPBasicAuth
 
 if __name__ == "__main__":
-    """
-    argv[1] = repository
-    argv[2] = owner
-    """
-    req = requests.get('https://api.github.com/repos/{}/{}/commits'
-                       .format(argv[2], argv[1])).json()
-    count = 0
-    for commit in req:
-        name = commit.get("commit").get("author").get("name")
-        sha = commit.get("sha")
+    repo = sys.argv[1]
+    owner = sys.argv[2]
+    url = "https://api.github.com/repos/{:s}/{:s}/commits".format(
+        owner, repo)
+    response = requests.get(url)
+    commits = response.json()
+    for commit in commits[:10]:
+        sha = commit.get('sha')
+        name = commit.get('commit').get('author').get('name')
         print("{}: {}".format(sha, name))
-        count += 1
-        if count == 10:
-            break
