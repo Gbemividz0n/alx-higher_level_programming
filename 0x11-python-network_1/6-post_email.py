@@ -1,12 +1,12 @@
 #!/usr/bin/python3
+"""  displays the value of the X-Request-Id variable
+    found in the header of the response
+"""
 import requests
-from sys import argv
-"""
-script to send post request to passed url with email and display
-body as response
-"""
+import sys
 
 
 if __name__ == "__main__":
-    reply = requests.post(argv[1], {'email': argv[2]})
-    print(reply.text)
+    url = sys.argv[1]
+    response = requests.post(url, data={'email': sys.argv[2]})
+    print(response.text)
