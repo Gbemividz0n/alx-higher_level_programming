@@ -1,15 +1,15 @@
 #!/usr/bin/python3
+"""  displays the value of the X-Request-Id variable
+    found in the header of the response
+"""
 import requests
-from sys import argv
-"""
-script to send requests to url and display body of response
-"""
+import sys
 
 
 if __name__ == "__main__":
-    reply = requests.get(argv[1])
-    code = reply.status_code
-    if code > 400:
-        print("Error code: {}".format(code))
+    url = sys.argv[1]
+    response = requests.get(url)
+    if response.status_code >= 400:
+        print("Error code: {}".format(response.status_code))
     else:
-        print(reply.text)
+        print(response.text)
