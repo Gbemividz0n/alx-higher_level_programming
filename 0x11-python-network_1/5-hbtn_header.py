@@ -1,12 +1,12 @@
 #!/usr/bin/python3
+"""  displays the value of the X-Request-Id variable
+    found in the header of the response
+"""
 import requests
-from sys import argv
-"""
-script that takes in a url to send a request to the url
-and display the values of the variable X-Request-Id
-"""
+import sys
 
 
 if __name__ == "__main__":
-    reply = requests.get(argv[1])
-    print(reply.headers.get('X-Request-Id'))
+    url = sys.argv[1]
+    response = requests.get(url)
+    print(response.headers.get('X-Request-Id'))
