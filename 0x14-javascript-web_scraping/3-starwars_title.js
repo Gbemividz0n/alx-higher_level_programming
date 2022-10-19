@@ -1,9 +1,8 @@
 #!/usr/bin/node
 const request = require('request');
-const id = process.argv[2];
-request('http://swapi.co/api/films/' + id + '/', function (error, response, body) {
-  if (error == null) {
-    const json = JSON.parse(body);
-    console.log(json.title);
+request.get('http://swapi.co/api/films/' + process.argv[2] + '/', function (err, response, body) {
+  if (err) throw err;
+  else if (response.statusCode === 200) {
+    console.log(JSON.parse(body).title);
   }
 });
